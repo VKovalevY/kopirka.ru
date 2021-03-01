@@ -1,1 +1,233 @@
-/* You can add global styles to this file, and also import other style files */
+@import './fonts/ubuntu/ubuntu.css';
+@import '~@mdi/font/css/materialdesignicons.css';
+@import './variables';
+@import './app/shared/styles/styles';
+
+$screen-240: 240px;
+$screen-480: 680px;
+$screen-540: 540px;
+$screen-600: 600px;
+$screen-640: 640px;
+$screen-800: 800px;
+$screen-1024: 1024px;
+
+@if $border-size > 0 {
+  $screen-240: 240px - 2 * $border-size;
+  $screen-480: 480px - 2 * $border-size;
+  $screen-540: 540px - 2 * $border-size;
+  $screen-600: 600px - 2 * $border-size;
+  $screen-640: 640px - 2 * $border-size;
+  $screen-800: 800px - 2 * $border-size;
+  $screen-1024: 1024px - 2 * $border-size;
+}
+
+@mixin border() {
+  @if $border-size > 0 {
+    border: $border-size solid $border-color;
+  }
+}
+
+//Настройка экрана
+@mixin sizing($width, $height) {
+  body {
+    width: $width;
+    height: $height;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: $font-family;
+  @include border();
+}
+
+@include sizing($screen-640, $screen-240);
+.message-font-size {
+  font-size: 24px;
+}
+
+.configuration-layout {
+  font-weight: normal;
+  .header {
+    display: flex;
+    flex-direction: row;
+    background-color: $border-color;
+    border-bottom: $border-size solid $border-color;
+    .title {
+      display: flex;
+      align-items: center;
+      flex: 1 1 auto;
+      justify-content: center;
+    }
+    button {
+      vertical-align: middle;
+      background-color: transparent;
+      font-weight: normal;
+      border: 1px solid black;
+    }
+  }
+}
+
+button:focus {
+  outline: none;
+}
+
+.main-page {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.qrcode-text {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.root-text {
+  font-size: 28px;
+  font-weight: 300;
+}
+
+.center-message {
+  font-size: 28px;
+  z-index: 2000;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0 -50% 0 0;
+  transform: translate(-50%, -50%)
+}
+.center-message .center-message-bold {
+  font-weight: bold;
+}
+.center-message .center-message-normal {
+  font-weight: normal;
+}
+.qrcode-img {
+  height: 280px;
+  max-height: 280px;
+}
+.element-qrcode-img {
+  padding-top: 24px;
+}
+.element-qrcode-text {
+  padding-top: 12px;
+}
+.element-text {
+  padding-top: 40px;
+}
+
+
+
+
+//800x480px Display Size
+@media only screen and (min-width: 641px) and (min-height: 241px) {
+  @include sizing($screen-800, $screen-480);
+
+  .message-font-size {
+    font-size: 28px;
+  }
+
+  .configuration-layout {
+    .header {
+      .title {
+        line-height: 10px;
+        font-size: 28px;
+      }
+      button {
+        line-height: 11px;
+        font-size: 28px;
+        padding: 12px 4px;
+      }
+    }
+  }
+}
+
+//800x540px Display Size
+@media only screen and (min-width: 641px) and (min-height: 481px) {
+  @include sizing($screen-800, $screen-540);
+
+  .message-font-size {
+    font-size: 28px;
+  }
+
+  .configuration-layout {
+    .header {
+      .title {
+        line-height: 10px;
+        font-size: 28px;
+      }
+      button {
+        line-height: 11px;
+        font-size: 28px;
+        padding: 12px 4px;
+      }
+    }
+  }
+}
+
+//800x600px Display Size
+@media only screen and (min-width: 641px) and (min-height: 541px) {
+  @include sizing($screen-800, $screen-600);
+
+  .message-font-size {
+    font-size: 28px;
+  }
+
+  .configuration-layout {
+    .header {
+      .title {
+        line-height: 10px;
+        font-size: 28px;
+      }
+      button {
+        line-height: 11px;
+        font-size: 28px;
+        padding: 12px 4px;
+      }
+    }
+  }
+}
+
+//1024x600px Display Size
+@media only screen and (min-width: 801px) and (min-height: 481px) {
+  @include sizing($screen-1024, $screen-600);
+
+  .message-font-size {
+    font-size: 36px;
+  }
+
+  .configuration-layout {
+    .header {
+      .title {
+        line-height: 10px;
+        font-size: 28px;
+      }
+      button {
+        line-height: 11px;
+        font-size: 28px;
+        padding: 12px 4px;
+      }
+    }
+  }
+}
+
+.center-screen {
+  z-index: 2000;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0 -50% 0 0;
+  transform: translate(-50%, -50%)
+}
+
+.pull-right {
+  float: right;
+}
+.key {
+  font-family: $font-family;
+}

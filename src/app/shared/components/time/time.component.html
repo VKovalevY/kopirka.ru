@@ -1,0 +1,34 @@
+<div class="time-component">
+  <table>
+    <tr>
+      <td rowspan="2">
+        <span class="font-size-144">{{inlineHour}}</span>
+      </td>
+      <td>
+        <span class="mdi mdi-menu-up arrow-class" role="button" aria-hidden="false" (click)="hourUp()"></span>
+      </td>
+      <td rowspan="2">
+        <span class="font-size-144">:</span>
+      </td>
+      <td rowspan="2">
+        <span class="font-size-144">{{inlineMinute}}</span>
+      </td>
+      <td>
+        <span class="mdi mdi-menu-up arrow-class" role="button" aria-hidden="false" (click)="minuteUp()"></span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="mdi mdi-menu-down arrow-class" role="button" aria-hidden="false" (click)="hourDown()"></span>
+      </td>
+      <td>
+        <span class="mdi mdi-menu-down arrow-class" role="button" aria-hidden="false" (click)="minuteDown()"></span>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="5">
+        <button (click)="completeTime()">Применить</button>
+      </td>
+    </tr>
+  </table>
+</div>

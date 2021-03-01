@@ -1,0 +1,16 @@
+<div class="configuration-layout">
+  <div class="header">
+    <div class="title">
+      <span>{{title}}</span>
+    </div>
+    <button (click)="close()">
+      <i class="mdi mdi-close"></i>
+    </button>
+  </div>
+  <app-shared-back-panel
+    *ngIf="backPanelTitle != null && backPanelMdiClass != null"
+    [title]="backPanelTitle"
+    [mdiClass]="backPanelMdiClass"
+    [backRoute]="backRoute"></app-shared-back-panel>
+  <router-outlet></router-outlet>
+</div>

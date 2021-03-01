@@ -1,0 +1,17 @@
+<div *ngIf="data?.image == null" class="center-screen message-font-size">
+  {{data?.message}}
+</div>
+<div *ngIf="isEvent" class="center-screen message-font-size">
+  {{eventMessage}}
+</div>
+<div *ngIf="!isEvent && data?.image != null" class="main-page">
+  <div class="element-qrcode-img">
+    <img [src]="data?.image" class="qrcode-img">
+  </div>
+  <div class="element-qrcode-text">
+    <span class="qrcode-text">{{data?.code}}</span>
+  </div>
+  <div class="element-text">
+    <span class="root-text">{{messageText}}</span>
+  </div>
+</div>

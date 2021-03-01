@@ -1,0 +1,56 @@
+<div class="component">
+  <table class="center-horizontal pin-table">
+    <tr>
+      <td class="padding-pin" *ngFor="let num of nums">
+        <span *ngIf="this.keys.length < num" class="mdi mdi-circle-outline pin_part"></span>
+        <span *ngIf="this.keys.length >= num" class="mdi mdi-circle pin_part"></span>
+      </td>
+    </tr>
+  </table>
+  <table class="center-horizontal key-table">
+    <tr>
+      <td>
+        <button class="key" (click)="enter(1)">1</button>
+      </td>
+      <td>
+        <button class="key" (click)="enter(2)">2</button>
+      </td>
+      <td>
+        <button class="key" (click)="enter(3)">3</button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button class="key" (click)="enter(4)">4</button>
+      </td>
+      <td>
+        <button class="key" (click)="enter(5)">5</button>
+      </td>
+      <td>
+        <button class="key" (click)="enter(6)">6</button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button class="key" (click)="enter(7)">7</button>
+      </td>
+      <td>
+        <button class="key" (click)="enter(8)">8</button>
+      </td>
+      <td>
+        <button class="key" (click)="enter(9)">9</button>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <button class="key" (click)="enter(0)">0</button>
+      </td>
+      <td>
+        <button class="key" (click)="back()">
+          <i class="mdi mdi-backspace-outline"></i>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>

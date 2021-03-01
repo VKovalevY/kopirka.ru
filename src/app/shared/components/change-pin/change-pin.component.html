@@ -1,0 +1,60 @@
+<div class="component">
+  <div class="change-pin-header-container">
+    <span class="change-pin-header">{{mode_header}}</span>
+  </div>
+  <table class="center-horizontal pin-table">
+    <tr>
+      <td class="padding-pin" *ngFor="let num of nums">
+        <span *ngIf="this.keys.length < num" class="mdi mdi-circle-outline pin_part"></span>
+        <span *ngIf="this.keys.length >= num" class="mdi mdi-circle pin_part"></span>
+      </td>
+    </tr>
+  </table>
+  <table class="center-horizontal key-table">
+    <tr>
+      <td>
+        <button class="key-small" (click)="enter(1)">1</button>
+      </td>
+      <td>
+        <button class="key-small" (click)="enter(2)">2</button>
+      </td>
+      <td>
+        <button class="key-small" (click)="enter(3)">3</button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button class="key-small" (click)="enter(4)">4</button>
+      </td>
+      <td>
+        <button class="key-small" (click)="enter(5)">5</button>
+      </td>
+      <td>
+        <button class="key-small" (click)="enter(6)">6</button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button class="key-small" (click)="enter(7)">7</button>
+      </td>
+      <td>
+        <button class="key-small" (click)="enter(8)">8</button>
+      </td>
+      <td>
+        <button class="key-small" (click)="enter(9)">9</button>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <button class="key-small" (click)="enter(0)">0</button>
+      </td>
+      <td>
+        <button class="key-small" (click)="back()">
+          <i class="mdi mdi-backspace-outline"></i>
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+<app-shared-dialog *ngIf="showError" message={{errorMessage}} (ok)="dialogOk()"></app-shared-dialog>

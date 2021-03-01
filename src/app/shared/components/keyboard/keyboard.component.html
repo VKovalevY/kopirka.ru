@@ -1,0 +1,35 @@
+<div class="component-keyboard">
+  <div class="input-wrapper-01">
+    <div class="input-field-01">
+      <input readonly [type]="password ? 'password' : 'text'" [placeholder]="placeholder" [value]="value">
+      <button (click)="backSpace()">
+        <i class="mdi mdi-backspace"></i>
+      </button>
+    </div>
+    <button (click)="confirm()">
+      {{confirmTitle}}
+    </button>
+  </div>
+  <div class="keyboard-container">
+    <div class="ribbon-container" *ngIf="extraKeys != null && extraKeys.length > 0">
+      <button
+        class="button ribbon_button"
+        *ngFor="let key of extraKeys"
+        (click)="keyHandler(key)">
+        <span *ngIf="key != null">{{key}}</span>
+      </button>
+    </div>
+    <div class="keyboard-container">
+      <div class="line" *ngFor='let row of rows'>
+        <button
+          class="button"
+          [class]="value.classes"
+          *ngFor='let value of row'
+          [innerHtml]="value.innerHtml | safeHtml"
+          (click)="keyHandler(value.key)">
+          <span *ngIf="value.key != null">{{value.key}}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

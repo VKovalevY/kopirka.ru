@@ -1,0 +1,2 @@
+<app-shared-pin [count]="count" (completeEnter)="onPinComplete($event)" #pin></app-shared-pin>
+<app-shared-dialog *ngIf="showError" message={{errorMessage}} (ok)="dialogOk()"></app-shared-dialog>

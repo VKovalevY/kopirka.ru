@@ -33,7 +33,14 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "src/xrxLibrary/base64v1_0.js",
+              "src/xrxLibrary/XRXDeviceConfig.js",
+              "src/xrxLibrary/XRXJobManagement.js",
+              "src/xrxLibrary/XRXWebservices.js",
+              "src/xrxLibrary/XRXWsSecurity.js",
+              "src/xrxLibrary/XRXXmlHandler.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -46,15 +53,17 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
+              "extractCss": true,
               "namedChunks": false,
+              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",

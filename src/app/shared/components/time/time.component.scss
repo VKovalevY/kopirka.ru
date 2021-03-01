@@ -1,0 +1,81 @@
+.time-component {
+  margin-top: 24px;
+  margin-left: auto;
+  margin-right: auto;
+}
+span {
+  font-size: 72px;
+  font-family: Ubuntu;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+td {
+  text-align: center;
+  vertical-align: middle;
+  button {
+    border: 1px solid black;
+    font-size: 24px;
+    background-color: transparent;
+    height: 44px;
+  }
+}
+
+.td-time {
+  height: 72px;
+}
+.td-arrow {
+  height: 36px;
+}
+
+tr {
+  height: 72px;
+}
+
+.font-size-144 {
+  font-size: 144px;
+}
+
+.font-size-72 {
+  font-size: 72px;
+}
+
+.time-container {
+  display: inline-block;
+  position: relative;
+  input {
+    font-size: 72px;
+    display: block;
+    width: 120px;
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+.arrow-class {
+  //position: absolute;
+  top:7px;
+  right: -10px;
+  height: 0;
+}
+
+.arrow-class:before {
+  display: block;
+  position: relative;
+  speak: none;
+  font-size: 72px;
+  //transform: scaleY(1) scaleX(1);
+}
+
+.arrow-up {
+  top: -18px;
+}
+
+.arrow-down {
+  top: 21px;
+}

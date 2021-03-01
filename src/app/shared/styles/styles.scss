@@ -1,0 +1,507 @@
+.center-horizontal {
+  margin-left: auto;
+  margin-right: auto;
+}
+button.key {
+  border-color: #444444;
+  border-width: 1px;
+}
+button.key:active .key {
+  background-color: #444444;
+  color: #eeeeee;
+}
+button.key:focus .key {
+  outline: none;
+}
+/* 800x480px Display Size */
+@media only screen and (min-width: 641px) and (min-height: 241px) {
+  .component {
+    margin: 10px;
+  }
+  .pin_part {
+    font-size: 28.8px;
+  }
+  .pin-table {
+    margin-top: 20px;
+  }
+  .key-table {
+    border-spacing: 4.8px;
+    padding: 20px;
+  }
+  .key {
+    font-size: 36px;
+    width: 90px;
+    height: 60px;
+  }
+  .key-small {
+    font-size: 28px;
+    width: 70px;
+    height: 40px;
+  }
+  .change-pin-header-container {
+    display: flex;
+    span.change-pin-header {
+      font-size: 24px;
+      font-family: Ubuntu;
+      justify-content: center;
+    }
+  }
+}
+
+/* 800x540px Display Size */
+@media only screen and (min-width: 641px) and (min-height: 481px) {
+  .component {
+    margin: 10px;
+  }
+  .pin_part {
+    font-size: 32px;
+  }
+  .pin-table {
+    margin-top: 20px;
+  }
+  .key-table {
+    border-spacing: 4.8px;
+    padding: 20px;
+  }
+  .key {
+    font-size: 40.5px;
+    width: 101.25px;
+    height: 67.5px;
+  }
+}
+
+/* 800x600px Display Size */
+@media only screen and (min-width: 641px) and (min-height: 541px) {
+  .component {
+    margin: 10px;
+  }
+  .pin_part {
+    font-size: 36px;
+  }
+  .pin-table {
+    margin-top: 20px;
+  }
+  .key-table {
+    border-spacing: 4.8px;
+    padding: 20px;
+  }
+  .key {
+    font-size: 45px;
+    width: 112.5px;
+    height: 75px;
+  }
+}
+
+/* 1024x600px Display Size */
+@media only screen and (min-width: 801px) and (min-height: 481px) {
+  .component {
+    margin: 10px;
+  }
+  .pin_part {
+    font-size: 36px;
+  }
+  .pin-table {
+    margin-top: 20px;
+  }
+  .key-table {
+    border-spacing: 4.8px;
+    padding: 20px;
+  }
+  .key {
+    font-size: 45px;
+    width: 112.5px;
+    height: 75px;
+  }
+}
+
+.dialog-overlay {
+  position: fixed;
+  z-index: 999;
+  top: 0%;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background: #000;
+  color: white;
+  display: block;
+  opacity: 0.8;
+}
+
+.dialog-centerMessage {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  bottom: 15px;
+  right: 15px;
+  text-align: center;
+  z-index: 2000;
+  font-size: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  word-wrap: break-word;
+}
+
+.dialog-centerMessage .dialog-centerMessageBold {
+  font-weight: bold;
+}
+
+.dialog-mt8 {
+  margin-top: 40px;
+}
+
+.dialog-centerMessage .dialog-button {
+  margin-left: auto;
+  margin-right: auto;
+  width: 150px;
+  height: 60px;
+  font-size: 24px;
+  border: 1px solid white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.component_page {
+  width: 100%;
+}
+
+.padding-0 {
+  padding: 0;
+}
+
+button.toolbox-item {
+  width: 100%;
+  height: 54px;
+  margin: 0;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 2px solid #ffdb01;
+  background-color: #fefefe;
+  color: #444444;
+  text-align: left;
+  font-size: 24px;
+}
+
+div.toolbox-item {
+  vertical-align: middle;
+  width: 100%;
+  height: 54px;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 2px solid #ffdb01;
+  background-color: #fefefe;
+  color: #444444;
+  text-align: left;
+  font-size: 24px;
+  margin: 0;
+  button {
+    height: 44px;
+    font-size: 24px;
+    margin: 5px;
+    background-color: transparent;
+    border: 1px solid black;
+  }
+  button:active {
+    background-color: grey;
+    color: #eeeeee;
+  }
+}
+
+button.toolbox-item:active {
+  background-color: grey;
+  color: #eeeeee;
+}
+
+.vertical-align {
+  display: flex;
+  align-items: center;
+}
+.margin-left-10 {
+  margin-left: 10px;
+}
+
+
+
+.component-keyboard {
+  margin: 5px;
+}
+.right {
+  float: right;
+}
+
+
+/*
+.input-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  .input-field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    border: 1px solid black;
+    padding: 5px;
+    height: 32px;
+    width: 100%;
+    i {
+      font-size: 24px;
+    }
+    input {
+      height: 100%;
+      width: 100%;
+      font-size: 24px;
+      border: 0;
+    }
+    input :active, :hover, :focus {
+      outline: 0;
+      outline-offset: 0;
+    }
+  }
+  button {
+    height: 44px;
+    font-size: 24px;
+    margin: 0 0 0 5px;
+    background-color: transparent;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    float: right;
+  }
+  button:active {
+    background-color: grey;
+    color: #eeeeee;
+  }
+}
+*/
+
+
+
+
+$font-size: 45px;
+$button-margin: 3px;
+$button-height: 50px;
+$button-key-width: 53px;
+$button-control-width: 80px;
+$button-space-width: 300px;
+
+$factor1024: 1.28;
+$factor640: 0.8;
+
+.keyboard-container {
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0 0;
+}
+.ribbon-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.line {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.button {
+  border-color: #444444;
+  border-width: 1px;
+}
+button:active {
+  background-color: #444444;
+  color: gray;
+}
+button:focus {
+  outline: none;
+}
+.active {
+  background-color: #444444;
+  color: #eeeeee;
+}
+span {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.ribbon_button {
+  padding-left: 1vw;
+  padding-right: 1vw;
+  font-size:3vw;
+}
+
+.caps {}
+.shift {}
+/* 800x480px Display Size */
+@media only screen and (min-width: 641px) and (min-height: 241px) {
+  .button {
+    margin: 0px 3px;
+    height: 50px;
+  }
+  .button_key {
+    width: 53px;
+  }
+  .button-control {
+    vertical-align: top;
+    width: 80px;
+  }
+  .button-space {
+    vertical-align: top;
+    width: 300px;
+  }
+  .input-wrapper {
+    width: 100%;
+  }
+  .input-field {
+    background-color: #ff0000;
+  }
+  .ribbon-container {
+    height: 50px;
+  }
+  .line {
+    height: 56px;
+  }
+  .input-wrapper-01 {
+    height: 100%;
+    display: table;
+    .input-field-01 {
+      height: 32px;
+      width: 100%;
+      vertical-align: middle;
+      display: table-cell;
+      border: 1px solid black;
+      button {
+        padding: 0;
+        margin: 0;
+        height: 32px;
+        border: 0;
+        width: 44px;
+      }
+      input {
+        border: 0;
+        font-size: 24px;
+        font-family: $font-family;
+        vertical-align: middle;
+        width: 570px;
+      }
+      input :active, :hover, :focus {
+        outline: 0;
+        outline-offset: 0;
+      }
+      i {
+        vertical-align: middle;
+        font-size: 24px;
+      }
+    }
+    button {
+      display: table-cell;
+      height: 46px;
+      padding-top: 0;
+      padding-bottom: 0;
+      margin: 0 0 0 5px;
+      background-color: transparent;
+      border: 1px solid black;
+      font-size: 24px;
+      float: right;
+      font-family: $font-family;
+    }
+  }
+}
+
+/* 800x540px Display Size */
+@media only screen and (min-width: 641px) and (min-height: 481px) {
+  .button {
+    margin: 3px;
+    height: 56px;
+  }
+  .button_key {
+    width: 56px;
+  }
+  .button_control {
+    width: 90px;
+  }
+  .button-control-bottom {
+    //margin: 3px 3px 0;
+    width: 90px;
+  }
+  .button-space {
+    //margin: 3px 3px 0;
+    width: 300px;
+  }
+  .input-wrapper {
+    width: 100%;
+  }
+  .ribbon-container {
+    height: 56px;
+  }
+  .line {
+    height: 63px;
+  }
+}
+
+/* 800x600px Display Size */
+@media only screen and (min-width: 641px) and (min-height: 541px) {
+  .button {
+    margin: 4px;
+    height: 62px;
+  }
+  .button_key {
+    width: 66px;
+  }
+  .button_control {
+    width: 100px;
+  }
+  .button-control-bottom {
+    //margin: 4px 4px 0;
+    width: 100px;
+  }
+  .button-space {
+    //margin: 4px 4px 0;
+    width: 375px;
+  }
+  .input-wrapper {
+    width: 100%;
+  }
+  .ribbon-container {
+    height: 62px;
+  }
+  .line {
+    height: 70px;
+  }
+}
+
+/* 1024x600px Display Size */
+@media only screen and (min-width: 801px) and (min-height: 481px) {
+  .button {
+    margin: 4px;
+    height: 62px;
+  }
+  .button_key {
+    width: 66px;
+  }
+  .button_control {
+    width: 100px;
+  }
+  .button-control-bottom {
+    //margin: 4px 4px 0;
+    width: 100px;
+  }
+  .button-space {
+    //margin: 4px 4px 0;
+    width: 375px;
+  }
+  .input-wrapper {
+    width: 100%;
+  }
+  .ribbon-container {
+    height: 62px;
+  }
+  .line {
+    height: 70px;
+  }
+}
