@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<appCustomization xmlns="http://www.xerox.com/appstudio/ckapp/customization" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="customization.xsd" >
+	<minEIP>
+		<majorVersion>3</majorVersion>
+		<minorVersion>5</minorVersion>
+		<revision>0</revision>
+	</minEIP>
+	<countryRestriction>RUS</countryRestriction>
+	<appCategory>Utilities</appCategory>
+	<appStringSets>
+		<appStringSet lang="en">
+			<galleryDescription>
+				The application allows to ...
+			</galleryDescription>
+			<languages>Russian</languages>
+		</appStringSet>
+		<appStringSet lang="ru">
+			<galleryDescription>
+				Приложение позволяет ...
+			</galleryDescription>
+			<languages>Русский</languages>
+		</appStringSet>  
+	</appStringSets>
+</appCustomization>

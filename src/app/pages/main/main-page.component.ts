@@ -14,7 +14,8 @@ import {jobInfo} from "../../shared/interfaces/job-info";
 export class MainPageComponent implements OnInit, OnDestroy, AfterViewInit {
   public data: Data | null = null;
   public messageText = 'Сканируйте или введите код для начала печати';
-  private readonly handler: EventListener;
+  private readonly resumeHandler: EventListener;
+  private readonly suspendHandler: EventListener;
   private dataSubscription: Subscription | undefined;
   private stateSubscription: Subscription | undefined;
   isEvent = false;
@@ -24,17 +25,39 @@ export class MainPageComponent implements OnInit, OnDestroy, AfterViewInit {
       private router: Router,
       private dataService: DataService,
       private jobManagementService: JobManagementService) {
-    this.handler = async (event: Event) => {
+    this.resumeHandler = async (event: Event) => {
       await this.router.navigate(['']);
+      this.startTracking();
     };
-    document.addEventListener( 'resume', this.handler, false );
-    document.addEventListener( 'suspend', this.handler, false );
-    this.dataSubscription = dataService.dataSubject?.subscribe({
+    this.suspendHandler = async (event: Event) => {
+      await this.router.navigate(['']);
+      this.stopTracking();
+    };
+    document.addEventListener( 'resume', this.resumeHandler, false );
+    document.addEventListener( 'suspend', this.suspendHandler, false );
+    this.startTracking();
+  }
+  @HostListener('window:keydown', ['$event'])
+  keyEvent(event: KeyboardEvent): void {
+    if (event.which === 16) {
+      this.router.navigate(['configuration']).then(r => console.log('navigate configuration'));
+    }
+  }
+  startTracking() {
+    if(this.dataSubscription != undefined) {
+      this.dataSubscription.unsubscribe();
+      this.dataSubscription = undefined;
+    }
+    this.dataSubscription = this.dataService.dataSubject?.subscribe({
       next: (data: Data) => {
         this.data = data;
       }
     })
-    this.stateSubscription = jobManagementService.stateSubject?.subscribe({
+    if (this.stateSubscription != undefined) {
+      this.stateSubscription.unsubscribe();
+      this.stateSubscription = undefined;
+    }
+    this.stateSubscription = this.jobManagementService.stateSubject?.subscribe({
       next: (data: jobInfo) => {
         console.log('data', data)
         if(data == null) {
@@ -42,8 +65,14 @@ export class MainPageComponent implements OnInit, OnDestroy, AfterViewInit {
           this.isEvent = false;
         }
         else {
-          this.eventMessage = this.buildMessage(data);
-          this.isEvent = true;
+          if (this.data?.image != null) {
+            this.eventMessage = this.buildMessage(data);
+            this.isEvent = true;
+          }
+          else {
+            this.eventMessage = null;
+            this.isEvent = false;
+          }
         }
       }
     });
@@ -55,13 +84,16 @@ export class MainPageComponent implements OnInit, OnDestroy, AfterViewInit {
     if(this.dataService.account?.password != null && this.dataService.account?.password.length > 0) {
       password = this.dataService.account?.password.join('');
     }
+    this.dataService.start();
     this.jobManagementService.beginJobsRoll(user, password);
   }
-  @HostListener('window:keydown', ['$event'])
-  keyEvent(event: KeyboardEvent): void {
-    if (event.which === 16) {
-      this.router.navigate(['configuration']).then(r => console.log('navigate configuration'));
-    }
+  stopTracking() {
+    this.dataSubscription?.unsubscribe();
+    this.dataSubscription = undefined;
+    this.stateSubscription?.unsubscribe();
+    this.stateSubscription = undefined;
+    this.dataService.stop();
+    this.jobManagementService.stopJobRoll();
   }
   ngOnInit() {
     if(this.data == null) {
@@ -69,9 +101,7 @@ export class MainPageComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   ngOnDestroy(): void {
-    this.dataSubscription?.unsubscribe();
-    this.stateSubscription?.unsubscribe();
-    this.jobManagementService.stopJobRoll();
+    this.stopTracking();
   }
   ngAfterViewInit(): void {
   }

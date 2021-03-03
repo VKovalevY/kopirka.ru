@@ -20,15 +20,20 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/eip-app",
-            "index": "src/index.html",
+            "outputPath": "dist/Copix-prototype",
+            "index": "src/Copix-prototype.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "baseHref": "./",
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              { "glob": "*.xml", "input": "src/applet/xas", "output": "/xas" },
+              { "glob": "*.png", "input": "src/applet/", "output": "/" },
+              { "glob": "description.xml", "input": "src/applet/", "output": "/" },
+              { "glob": "app.json", "input": "src/config/", "output": "/" }
             ],
             "styles": [
               "src/styles.scss"
@@ -44,6 +49,10 @@
           },
           "configurations": {
             "production": {
+              "index": {
+                "input": "src/Copix-prototype.html",
+                "output": "Copix-prototype.html"
+              },
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -56,9 +65,10 @@
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
-              "extractLicenses": true,
+              "extractLicenses": false,
               "vendorChunk": false,
               "buildOptimizer": true,
+              "baseHref": "./",
               "budgets": [
                 {
                   "type": "initial",

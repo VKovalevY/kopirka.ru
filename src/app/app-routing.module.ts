@@ -4,7 +4,8 @@ import {MainPageComponent} from "./pages/main/main-page.component";
 
 const routes: Routes = [
   { path: '', component: MainPageComponent },
-  { path: 'configuration', loadChildren: () => import('./pages/configuration/configuration.module').then(m => m.ConfigurationModule) }
+  { path: 'configuration', loadChildren: () => import('./pages/configuration/configuration.module').then(m => m.ConfigurationModule) },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

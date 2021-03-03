@@ -51,8 +51,8 @@ export class JobManagementService {
         })
     });
   }
-  private getJobDetail(host: string, jobType: string, jobId: string) : Promise<any> {
-    return new Promise<any>((resolve, reject) => {
+  private getJobDetail(host: string, jobType: string, jobId: string) : Promise<jobInfo> {
+    return new Promise<jobInfo>((resolve, reject) => {
       xrxJobMgmtGetJobDetails(host, jobType, jobId, (req: string, res: string) => {
         const element = xrxJobMgmtParseGetJobDetails(res);
         const jobInfo = this.parseJobInfo(element);
@@ -63,8 +63,8 @@ export class JobManagementService {
       });
     });
   }
-  private getJobDetailSecure(host: string, jobType: string, jobId: string, user: string, password: string) : Promise<any> {
-    return new Promise<any>((resolve, reject) => {
+  private getJobDetailSecure(host: string, jobType: string, jobId: string, user: string, password: string) : Promise<jobInfo> {
+    return new Promise<jobInfo>((resolve, reject) => {
       xrxJobMgmtGetJobDetailsSecure(host, jobType, jobId, null, null, user, password, (req: string, res: string) => {
           const element = xrxJobMgmtParseGetJobDetails(res);
           const jobInfo = this.parseJobInfo(element);
@@ -124,55 +124,55 @@ export class JobManagementService {
     if (this.user != null && this.user != '' && this.password != null && this.password != '') {
       this.getJobListQueueSecure(this.host, this.user, this.password, true)
         .then((result) => {
-          if (result != null && result.length > 0) {
-            this.currentJobId = result[0].jobId;
-            this.stateSubject?.next(result[0]);
-            setTimeout(() => this.rollCurrentJob(), 1000);
-          }
-          else
-            this.timerId = setTimeout(() => this.roll(), 1000);
+          this.processRollListQueue(result);
         })
+        .catch(e => {})
     }
     else {
       this.getJobListQueue(this.host, true)
         .then((result) => {
-          if (result != null && result.length > 0) {
-            console.log(result);
-          }
-          this.timerId = setTimeout(() => this.roll(), 1000);
+          this.processRollListQueue(result);
         })
+        .catch(e => {})
     }
+  }
+  processRollListQueue(result: jobInfo[]) {
+    if (result != null && result.length > 0) {
+      this.currentJobId = result[0].jobId;
+      this.stateSubject?.next(result[0]);
+      setTimeout(() => this.rollCurrentJob(), 1000);
+    }
+    else
+      this.timerId = setTimeout(() => this.roll(), 1000);
   }
   rollCurrentJob() {
     if(this.currentJobId != null) {
       if (this.user != null && this.user != '' && this.password != null && this.password != '') {
         this.getJobDetailSecure(this.host, "Print", this.currentJobId, this.user, this.password)
           .then((result) => {
-            this.stateSubject?.next(result);
-            if (result.jobState == 'Completed') {
-              setTimeout(
-                () => {
-                  this.stateSubject?.next(null);
-                  this.roll();
-                }, 4000);
-            } else
-              this.timerId = setTimeout(() => this.rollCurrentJob(), 1000);
+            this.processJobDetail(result);
           })
+          .catch(e => {})
       }
       else {
         this.getJobDetail(this.host, "Print", this.currentJobId)
           .then((result) => {
-            this.stateSubject?.next(result);
-            if (result.jobState == 'Completed') {
-              setTimeout(
-                () => {
-                  this.stateSubject?.next(null);
-                  this.roll();
-                }, 4000);
-            } else
-              this.timerId = setTimeout(() => this.rollCurrentJob(), 1000);
+            this.processJobDetail(result);
           })
+          .catch(e => {})
       }
+    }
+  }
+  processJobDetail(result: jobInfo) {
+    this.stateSubject?.next(result);
+    if (result.jobState == 'Completed') {
+      setTimeout(
+        () => {
+          this.stateSubject?.next(null);
+          this.roll();
+        }, 4000);
+    } else {
+      this.timerId = setTimeout(() => this.rollCurrentJob(), 1000);
     }
   }
   failureCallback(req: string, res: string, status: any, resolve: (value?: any) => void, reject: (reason?: any) => void) {
@@ -198,9 +198,6 @@ declare function xrxJobMgmtListCompletedQueueSecure(
     callback_success: any,
     callback_failure: any): void;
 declare function xrxJobMgmtParseListQueueSecure( response: string ): any;
-declare function xrxJobMgmtParseListQueueString( response: string ): any;
-declare function xrxStringToDom ( response: string ): any;
-declare function xrxFindElements(xmldoc: string, name: string): any;
 declare function xrxJobMgmtGetJobDetails( url: string, jobType: string, jobId: string, callback_success: any, callback_failure: any ): void;
 declare function xrxJobMgmtParseGetJobDetails( response: string ): any;
 declare function xrxJobMgmtGetJobDetailsSecure(

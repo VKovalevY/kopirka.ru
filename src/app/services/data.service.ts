@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {Data, Account} from "./interfaces";
+import {Data, Account, app} from "./interfaces";
 import {DeviceService} from "../shared/services/device.service";
 import {DeviceInfo} from "../shared/services/interfaces";
-import {Subject} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {TimeData} from "../shared/interfaces/time";
 
 @Injectable({
@@ -13,9 +13,9 @@ export class DataService {
   //@ts-ignore()
   localData: Data | null = null;
   //@ts-ignore()
-  lastDownloadDate: Date;
+  //lastDownloadDate: Date;
   //@ts-ignore()
-  nextDownloadDate: Date;
+  //nextDownloadDate: Date;
   public dataSubject: Subject<Data> | null = null;
   //private host = 'http://192.168.1.70';
   private host = 'http://127.0.0.1';
@@ -28,7 +28,9 @@ export class DataService {
   private defaultPin = '1111';
   private defaultTimeData = <TimeData>{hour: 0, minute: 0};
   private noUrlMessage = 'Произведите настройку приложения';
-  private gatDateMessage = 'Ошибка связи с сервером';
+  private getDateMessage = 'Ошибка связи с сервером';
+  private errorStartApplication  = 'Ошибка запуска приложения';
+  private nextDownloadDateItemName = 'nextDownloadDate';
   private millisecondsOfDay = 86400000;
   private deviceInfo: DeviceInfo | null = null;
   private updateTimerId: number = -1;
@@ -49,24 +51,48 @@ export class DataService {
     this.internalUrl = this.getUrl();
     this.internalTimeData = this.getTimeData();
     this.internalAccount = this.getAccount();
-    this.reCalcDate();
     this.internalSerial = this.getSerial();
+    if (this.internalSerial == null) {
+      this.readConfig().subscribe(
+        (result) => {
+          if (result.url != null) {
+            this.url = result.url;
+          }
+          if (result.pin != null) {
+            this.pin = result.pin;
+          }
+          if (result.account != null) {
+            this.account = result.account;
+          }
+          if (result.datatime != null) {
+            this.timeData = result.datatime;
+          }
+        },
+        (error) => {}
+      );
+    }
+  }
+  start() {
     if (this.internalSerial === null) {
       this.deviceService.getDeviceInfo(this.host)
         .then(deviceInfo => {
           this.deviceInfo = deviceInfo;
           localStorage.setItem(this.serialNumItemName, deviceInfo.device.serial);
           this.internalSerial = deviceInfo.device.serial;
-          this.fetchData();
-          this.updateTimer();
+          this.fetchData(true);
         })
-        .catch(() => this.fetchData())
+        .catch(() => {
+          this.fetchData();
+        });
     } else {
       this.fetchData();
-      this.updateTimer();
     }
   }
-
+  stop() {
+    if (this.updateTimerId != -1) {
+      clearTimeout(this.updateTimerId)
+    }
+  }
   get pin() {
     return this.internalPin;
   }
@@ -103,7 +129,6 @@ export class DataService {
       this.internalTimeData = value;
     }
     this.reCalcDate();
-    this.updateTimer();
   }
 
   get data(): Data {
@@ -126,6 +151,17 @@ export class DataService {
       localStorage.setItem(this.accountItemName, JSON.stringify(value));
     }
   }
+  set nextDownloadDate(value: Date) {
+    localStorage.setItem(this.nextDownloadDateItemName, value.toString());
+  }
+  get nextDownloadDate(): Date {
+    let dateString: string | null = localStorage.getItem(this.nextDownloadDateItemName);
+    if (dateString == null) {
+      this.reCalcDate();
+    }
+    dateString = <string> localStorage.getItem(this.nextDownloadDateItemName);
+    return new Date(dateString);
+  }
   private reCalcDate() {
     const currentDate = new Date();
     const timerDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), this.internalTimeData.hour, this.internalTimeData.minute);
@@ -133,9 +169,6 @@ export class DataService {
       timerDate.setTime(timerDate.getTime() + this.millisecondsOfDay);
     }
     this.nextDownloadDate = timerDate;
-    const date = new Date(this.nextDownloadDate);
-    date.setTime(date.getTime() - this.millisecondsOfDay);
-    this.lastDownloadDate = date;
   }
 
   private getPin(): string {
@@ -185,39 +218,57 @@ export class DataService {
     }
   }
   private fetchData(force: boolean = false) {
-    const data = this.getData();
-    if (force || data === null || data.date === null || data.date.getTime() < this.lastDownloadDate.getTime()) {
-      if (this.url === null || this.url.length < 2) {
+    if (this.internalSerial == null) {
+      this.data = <Data>{
+        image: null,
+        code: null,
+        date: null,
+        message: this.errorStartApplication
+      }
+      this.updateTimer();
+    }
+    else {
+      if (this.internalUrl == null || this.internalUrl.length < 2) {
         this.data = <Data>{
           image: null,
           code: null,
           date: null,
           message: this.noUrlMessage
         }
-      } else {
-        let url = this.url.join('');
-        if (this.internalSerial != null) {
+        this.updateTimer();
+      }
+      else {
+        const data = this.getData();
+        const currentDate = new Date();
+        const nextDownloadDate = this.nextDownloadDate;
+        if (force || data?.image == null || data?.date === null || currentDate.getTime() > nextDownloadDate.getTime()) {
+          let url = this.internalUrl.join('');
           url = url.replace('[sysnumber]', this.internalSerial);
           const subscribe = this.http.get<Data>(url).subscribe(
             (data) => {
               data.date = new Date();
               this.data = data;
               subscribe.unsubscribe();
+              this.reCalcDate();
+              this.updateTimer();
             },
             (error) => {
               this.data = <Data>{
                 image: null,
                 code: null,
                 date: null,
-                message: this.gatDateMessage
+                message: this.getDateMessage
               }
               subscribe.unsubscribe();
+              this.updateTimer();
             }
           );
         }
+        else {
+          this.data = data;
+          this.updateTimer();
+        }
       }
-    } else {
-      this.data = data;
     }
   }
 
@@ -225,13 +276,15 @@ export class DataService {
     if (this.updateTimerId != -1) {
       clearTimeout(this.updateTimerId)
     }
-    const startInterval = this.nextDownloadDate.getTime() - new Date().getTime()
+    let startInterval = 2000;
+    if(this.internalData?.image != null) {
+      startInterval = this.nextDownloadDate.getTime() - new Date().getTime()
+    }
     this.updateTimerId = setTimeout(() => {
       this.fetchData(true);
-      setTimeout(() => {
-        this.reCalcDate();
-        this.updateTimer();
-      }, 100);
     }, startInterval);
+  }
+  private readConfig() : Observable<app> {
+    return this.http.get<app>("app.json")
   }
 }
